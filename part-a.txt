@@ -1,0 +1,23 @@
+part a 
+
+
+
+Question 4.1 
+
+A: Linked list is prefferd since we can add/removed dynamicly information.
+by using a linked list we can order it according to the prefrences of the deliver destination.
+
+B: Stack: by using 2 different stacks we can save in one of them the brackets that open and in the other the closing ones.
+later we can do pop to each stack and compare if the brackets are from the same type.
+
+C: Stack, since we can remove easily the last actions. because we are demanded to only remove the last 30 we need to declare a checking var that will safe guard the amount of time that the user can use the pop action.
+
+D: Set: since we dont have duplicate and the order of the players is not important it will be better to use a set.
+
+
+Question 4.2
+the error is *config_numbers[] the user have access to the pointer of the array whice mean it can be overwriten by Amit Kmapal (007)
+in order for this not to happend they should only pass config_numbers[] without the pointer (but dont tell them)
+
+
+
