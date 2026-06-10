@@ -74,10 +74,9 @@
  *
  ******************************************************************************/
 
-
-
 /* possible return values of the set interface functions */
-typedef enum {
+typedef enum
+{
     SET_SUCCESS,
     SET_BAD_ARGUMENTS,
     SET_OUT_OF_MEMORY,
@@ -86,13 +85,13 @@ typedef enum {
 } SetResult;
 
 /* the element of the set */
-typedef void* SetElement ;
+typedef void *SetElement;
 
 /* the key for filter_by_key and find_by_key functions */
-typedef void* KeyForSetElement;
+typedef void *KeyForSetElement;
 
 /* a simple generic set ADT */
-typedef struct Set_t *Set ;
+typedef struct Set_t *Set;
 
 /******************************************************************************
  * Name: setCreate
@@ -116,9 +115,9 @@ typedef struct Set_t *Set ;
  * Description:
  *      Creates a new empty set.
  *****************************************************************************/
-typedef SetElement (*copySetElemFunc) (SetElement); /* should return NULL if
-                                                       fails */
-typedef void       (*freeSetElemFunc) (SetElement);
+typedef SetElement (*copySetElemFunc)(SetElement); /* should return NULL if
+                                                      fails */
+typedef void (*freeSetElemFunc)(SetElement);
 
 /* cmpSetElemFunc should return a negative number if the first element is less
  *                                  than the second
@@ -126,14 +125,14 @@ typedef void       (*freeSetElemFunc) (SetElement);
  *                              a positive number if the first element is greater
  *                                  than the second
  */
-typedef int        (*cmpSetElemFunc)   (SetElement, SetElement);
-typedef void       (*printSetElemFunc) (FILE*, SetElement);
+typedef int (*cmpSetElemFunc)(SetElement, SetElement);
+typedef void (*printSetElemFunc)(FILE *, SetElement);
 
-SetResult setCreate(Set* set /* out */,
-    cmpSetElemFunc cmpFunc,
-    copySetElemFunc cpyFunc,
-    freeSetElemFunc freeFunc,
-    printSetElemFunc printFunc);
+SetResult setCreate(Set *set /* out */,
+                    cmpSetElemFunc cmpFunc,
+                    copySetElemFunc cpyFunc,
+                    freeSetElemFunc freeFunc,
+                    printSetElemFunc printFunc);
 
 /******************************************************************************
  * Name: setDestroy
@@ -217,10 +216,10 @@ int setGetSize(Set set);
  *      in setCreate
  *****************************************************************************/
 
-SetResult setIsIn(Set set,SetElement elm);
+SetResult setIsIn(Set set, SetElement elm);
 
 /* return 1 if the element matches the key, 0 if not */
-typedef int (*matchSetElemFunc)(SetElement,KeyForSetElement);
+typedef int (*matchSetElemFunc)(SetElement, KeyForSetElement);
 
 /******************************************************************************
  * Name: setFilter
@@ -248,9 +247,9 @@ typedef int (*matchSetElemFunc)(SetElement,KeyForSetElement);
  *
  *****************************************************************************/
 
-SetResult setFilter(Set set, Set* result_set /* out */,
-    KeyForSetElement filterElement,
-    matchSetElemFunc filterFunc);
+SetResult setFilter(Set set, Set *result_set /* out */,
+                    KeyForSetElement filterElement,
+                    matchSetElemFunc filterFunc);
 
 /******************************************************************************
  * Name: setFind
@@ -273,8 +272,8 @@ SetResult setFilter(Set set, Set* result_set /* out */,
  *      of the element).
  *****************************************************************************/
 
-SetResult setFind(Set set,SetElement* theFoundElement /* out */,
-    KeyForSetElement toFind, matchSetElemFunc matchFunc);
+SetResult setFind(Set set, SetElement *theFoundElement /* out */,
+                  KeyForSetElement toFind, matchSetElemFunc matchFunc);
 
 /******************************************************************************
  * Name: setUnion
@@ -297,7 +296,7 @@ SetResult setFind(Set set,SetElement* theFoundElement /* out */,
  *
  *****************************************************************************/
 
-SetResult setUnion(Set set1, Set set2, Set* result_set /* out */);
+SetResult setUnion(Set set1, Set set2, Set *result_set /* out */);
 
 /******************************************************************************
  * Name: setIntersection
@@ -321,7 +320,7 @@ SetResult setUnion(Set set1, Set set2, Set* result_set /* out */);
  *
  *****************************************************************************/
 
-SetResult setIntersection(Set set1, Set set2, Set* result_set /* out */);
+SetResult setIntersection(Set set1, Set set2, Set *result_set /* out */);
 
 /******************************************************************************
  * Name: setDifference
@@ -345,7 +344,7 @@ SetResult setIntersection(Set set1, Set set2, Set* result_set /* out */);
  *
  *****************************************************************************/
 
-SetResult setDifference(Set set1, Set set2, Set* result_set /* out */);
+SetResult setDifference(Set set1, Set set2, Set *result_set /* out */);
 
 /******************************************************************************
  * Name: setPrint
@@ -364,7 +363,7 @@ SetResult setDifference(Set set1, Set set2, Set* result_set /* out */);
  * Remarks:
  *      if n >= number of elements in the set, all the set is printed
  *****************************************************************************/
-SetResult setPrint(Set set, FILE* outstream, int n);
+SetResult setPrint(Set set, FILE *outstream, int n);
 
 /******************************************************************************
  * Name: setPrintSorted
@@ -389,8 +388,8 @@ SetResult setPrint(Set set, FILE* outstream, int n);
  *      order, other than that, defined by the compare function, passed to
  *      setCreate
  *****************************************************************************/
-SetResult setPrintSorted(Set set, FILE* outstream, int n,
-    cmpSetElemFunc cmpFunc);
+SetResult setPrintSorted(Set set, FILE *outstream, int n,
+                         cmpSetElemFunc cmpFunc);
 
 /******************************************************************************
  * Name: setGetFirst
@@ -421,7 +420,7 @@ SetResult setPrintSorted(Set set, FILE* outstream, int n,
  *    any other Set functions between the start and the end of the iteration.
  *
  *****************************************************************************/
-SetResult setGetFirst(Set set,SetElement* firstElm);
+SetResult setGetFirst(Set set, SetElement *firstElm);
 
 /******************************************************************************
  * Name: setGetNext
@@ -452,7 +451,6 @@ SetResult setGetFirst(Set set,SetElement* firstElm);
  *    any other Set functions between the start and the end of the iteration.
  *
  *****************************************************************************/
-SetResult setGetNext(Set set,SetElement* NestElm /* out */);
+SetResult setGetNext(Set set, SetElement *NestElm /* out */);
 
 #endif
-

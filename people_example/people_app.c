@@ -6,15 +6,15 @@
 #define ERROR_STREAM stderr
 #define OUT_STREAM stdout
 
-#define HANDLE_RESULT(cmd)                                  \
-    do                                                          \
-    {                                                           \
-        PeopleResult res = cmd;                                 \
-        if ((res) != PEOPLE_SUCCESS)                            \
-        {                                                       \
-            fprintf(ERROR_STREAM, "*** %s Failed [%s] ***\n",        \
-            #cmd, res2str(res));                                       \
-        }                                                       \
+#define HANDLE_RESULT(cmd)                                    \
+    do                                                        \
+    {                                                         \
+        PeopleResult res = cmd;                               \
+        if ((res) != PEOPLE_SUCCESS)                          \
+        {                                                     \
+            fprintf(ERROR_STREAM, "*** %s Failed [%s] ***\n", \
+                    #cmd, res2str(res));                      \
+        }                                                     \
     } while (0)
 
 static const char *resultStrings[] = {
