@@ -116,10 +116,90 @@ TransportManager TransportManagerCreate(void)
     return new_tm;
 }
 
-// TransportResult TransportManagerAdd(TransportManager tm,
-//                                     const char *name, int id, TransportType type, double revenue,
-//                                     double expenses)
-// {
+void TransportManagerDestroy(TransportManager tm)
+{
+    if (tm == NULL)
+    {
+        return;
+    }
+    setDestroy(tm);
+    free(tm);
+}
 
-//     return 0;
-// }
+int typeCheck(TransportType type)
+{
+    switch (type)
+    {
+    case 1:
+        return 1;
+        break;
+    case 2:
+        return 1;
+        break;
+    case 4:
+        return 1;
+        break;
+    case 8:
+        return 1;
+        break;
+    case 16:
+        return 1;
+        break;
+    case 32:
+        return 1;
+        break;
+    case 63:
+        return 1;
+        break;
+    default:
+        return 0;
+        break;
+    }
+}
+
+TransportResult TransportManagerAdd(TransportManager tm, int id, const char *name,
+                                    TransportType type, double revenue, double expenses)
+{
+
+    if (id <= 0)
+    {
+        return TRANSPORT_INVALID_ID;
+    }
+
+    if (!typeCheck(type))
+    {
+        return TRANSPORT_INVALID_TYPE;
+    }
+
+    if (revenue < 0)
+    {
+        return TRANSPORT_INVALID_REVENUE;
+    }
+
+    if (expenses < 0)
+    {
+        return TRANSPORT_INVALID_EXPENSES;
+    }
+
+    TransportCompany *company;
+
+    company->id = id;
+    company->type = type;
+    company->revenue = revenue;
+    company->expenses = expenses;
+    company->name = (char *)name;
+
+    SetResult result = setAdd(tm->companies, &company);
+
+    if (result == SET_ELEMENT_EXISTS)
+    {
+        return TRANSPORT_ALREADY_EXISTS;
+    }
+
+    if (result == SET_OUT_OF_MEMORY)
+    {
+        return TRANSPORT_OUT_OF_MEMORY;
+    }
+
+    return TRANSPORT_SUCCESS;
+}
