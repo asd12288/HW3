@@ -15,8 +15,18 @@ int main()
         return 1;
     }
 
-    SetResult res = TransportManagerAdd(tm, 2, "ilam", 1, 123, 123);
+    TransportManagerAdd(tm, 2, "Israel Railways", TRANSPORT_TRAIN, 5000.0, 4200.0);
+    TransportManagerAdd(tm, 7, "Egged", TRANSPORT_BUS, 3000.0, 3500.0);
+    TransportManagerAdd(tm, 1, "Zim", TRANSPORT_SHIPPING, 9000.0, 6000.0);
+    TransportManagerAdd(tm, 5, "El Al", TRANSPORT_FLIGHT, 8000.0, 8000.0);
+    TransportManagerAdd(tm, 3, "Gett", TRANSPORT_TAXI, 1200.0, 900.0);
 
-    printf("%d", res);
+    printf("=== All companies (by id) ===\n");
+    TransportManagerReportTransportCompanies(tm, TRANSPORT_ALL, stdout);
+
+    printf("\n=== Bus companies only ===\n");
+    TransportManagerReportTransportCompanies(tm, TRANSPORT_BUS, stdout);
+
+    TransportManagerDestroy(tm);
     return 0;
 }
