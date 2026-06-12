@@ -4,12 +4,11 @@
 #include <stdio.h>
 #include "prog2_ex3.h"
 
-
 /******************************************************************************/
-/*                                                                            
+/*
  * File: transport_manager.h
  * Description: Header file for the TransportManager module
- * Author: David Avdat 
+ * Author: David Avdat
  * Copyright (C) 2026 David Avdat
  */
 /*******************************************************************************/
@@ -19,13 +18,13 @@
  *
  * Below you'll find the functions you need to implement for this module.
  * Each function has a description of what it should do and what its input and output are.
- * 
+ *
  * You should not change the function prototypes or the defined types.
- * 
+ *
  * *** NOTE! ***
  * Each function that returns TransportResult may return one of the following in addition to the description:
  * TRANSPORT_SUCCESS, TRANSPORT_OUT_OF_MEMORY or TRANSPORT_NULL_ARGUMENT
- * 
+ *
  */
 
 /* The ADT main structure type definition */
@@ -74,9 +73,8 @@ void TransportManagerDestroy(TransportManager tm);
  *           Adds a new transportation company to the given TransportManager instance.
  */
 TransportResult TransportManagerAdd(TransportManager tm, int id, const char *name,
-    TransportType type, double revenue, double expenses);
+                                    TransportType type, double revenue, double expenses);
 /******************************************************************************/
-
 
 /*
  * Function: TransportManagerRemove
@@ -92,7 +90,6 @@ TransportResult TransportManagerAdd(TransportManager tm, int id, const char *nam
  */
 TransportResult TransportManagerRemove(TransportManager tm, int id);
 /******************************************************************************/
-
 
 /*
  * Function: TransportManagerUpdateRevenue
@@ -110,7 +107,6 @@ TransportResult TransportManagerRemove(TransportManager tm, int id);
 TransportResult TransportManagerUpdateRevenue(TransportManager tm, int id, double revenue);
 /******************************************************************************/
 
-
 /*
  * Function: TransportManagerUpdateExpenses
  * Parameters:
@@ -127,7 +123,6 @@ TransportResult TransportManagerUpdateRevenue(TransportManager tm, int id, doubl
 TransportResult TransportManagerUpdateExpenses(TransportManager tm, int id, double expenses);
 /******************************************************************************/
 
-
 /*
  * Function: TransportManagerMerge
  * Parameters:
@@ -140,7 +135,7 @@ TransportResult TransportManagerUpdateExpenses(TransportManager tm, int id, doub
  * Description:
  *           Merges two TransportManager instances into a new one.
  *           The merged instance will contain all companies from both tm.
- * 
+ *
  * ** NOTE! **
  * The merged instance will be created using the TransportManagerCreate function.
  * The caller is responsible for destroying the merged instance using
@@ -148,16 +143,15 @@ TransportResult TransportManagerUpdateExpenses(TransportManager tm, int id, doub
  * In case this function fails (e.g., returned TRANSPORT_ALREADY_EXISTS) both tm1 and tm2
  *  remains as they were. Otherwise, on success, both are destroyed.
  */
- TransportResult TransportManagerMerge(TransportManager tm1, TransportManager tm2, /* OUT */ TransportManager *merged);
- /******************************************************************************/
-
+TransportResult TransportManagerMerge(TransportManager tm1, TransportManager tm2, /* OUT */ TransportManager *merged);
+/******************************************************************************/
 
 /*
  * Function: TransportManagerReportTransportCompanies
  * Parameters:
  *           tm - a pointer to the TransportManager instance
  *           type - the type of the transportation companies to report (can be TRANSPORT_ALL)
- * 
+ *
  * Returns:
  *           TRANSPORT_INVALID_TYPE if the type is invalid.
  *           TRANSPORT_EMPTY if there are no companies in the tm.
@@ -172,7 +166,7 @@ TransportResult TransportManagerReportTransportCompanies(TransportManager tm, Tr
  * Parameters:
  *           tm - a pointer to the TransportManager instance
  *           outChannel - the output channel to write the report to
- * 
+ *
  * Returns:
  *           TRANSPORT_EMPTY if there are no companies in the tm.
  * Description:
@@ -181,13 +175,12 @@ TransportResult TransportManagerReportTransportCompanies(TransportManager tm, Tr
 TransportResult TransportManagerReportUnprofitableCompanies(TransportManager tm, FILE *outChannel);
 /******************************************************************************/
 
-
 /*
  * Function: TransportManagerReportCompaniesByIncome
  * Parameters:
  *           tm - a pointer to the TransportManager instance
  *           outChannel - the output channel to write the report to
- * 
+ *
  * Returns:
  *           TRANSPORT_EMPTY if there are no companies in the tm.
  * Description:
@@ -195,6 +188,5 @@ TransportResult TransportManagerReportUnprofitableCompanies(TransportManager tm,
  */
 TransportResult TransportManagerReportCompaniesByNetIncome(TransportManager tm, FILE *outChannel);
 /******************************************************************************/
-
 
 #endif /* __TRANSPORT_MANAGER_H__ */

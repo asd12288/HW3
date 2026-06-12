@@ -39,7 +39,6 @@ static int compareCompaniesById(SetElement elem1, SetElement elem2)
 
 void printCompany(FILE *output, SetElement elem)
 {
-
     TransportCompany *company = (TransportCompany *)elem;
     if (company == NULL)
     {
@@ -47,13 +46,6 @@ void printCompany(FILE *output, SetElement elem)
     }
     prog2_report_company(company->id, company->name, company->type,
                          company->revenue, company->expenses, output);
-}
-
-static int matchCompanyByType(SetElement elem, KeyForSetElement key)
-{
-    TransportCompany *company = elem;
-    TransportType type = *(TransportType *)key;
-    return (company->type & type) != 0;
 }
 
 static void freeCompany(SetElement elem)
@@ -74,7 +66,6 @@ static SetElement copyComapny(SetElement elem)
 
     TransportCompany *company = (TransportCompany *)elem;
     TransportCompany *company_copy = NULL;
-
     if (company == NULL)
     {
         return NULL;
@@ -212,36 +203,52 @@ TransportResult TransportManagerAdd(TransportManager tm, int id, const char *nam
     return TRANSPORT_SUCCESS;
 }
 
-TransportResult TransportManagerReportTransportCompanies(TransportManager tm, TransportType type, FILE *outChannel)
+TransportResult TransportManagerRemove(TransportManager tm, int id)
 {
-    if (tm == NULL || outChannel == NULL)
+
+    if (tm == NULL)
     {
         return TRANSPORT_NULL_ARGUMENT;
     }
 
-    if (!typeCheck(type))
+    if (id <= 0)
     {
-        return TRANSPORT_INVALID_TYPE;
+        return TRANSPORT_INVALID_ID;
     }
 
-    if (setGetSize(tm->companies) == 0)
+    TransportCompany company_to_remove;
+    company_to_remove.id = id;
+
+    TransportResult result = setRemove(tm->companies, &company_to_remove);
+
+    if (result == SET_ELEMENT_DOES_NOT_EXIST)
     {
-        return TRANSPORT_EMPTY;
+        return TRANSPORT_DOESNT_EXIST;
     }
 
-    Set filtered;
-    if (setFilter(tm->companies, &filtered, &type, matchCompanyByType) != SET_SUCCESS)
+    if (result == SET_BAD_ARGUMENTS)
     {
-        return TRANSPORT_OUT_OF_MEMORY;
+        return TRANSPORT_NULL_ARGUMENT;
     }
-
-    setPrintSorted(filtered, outChannel, setGetSize(filtered), compareCompaniesById);
-    setDestroy(filtered);
 
     return TRANSPORT_SUCCESS;
 }
 
-TransportResult TransportManagerReportUnprofitableCompanies(TransportManager tm, FILE *outChannel) {
-    /* TODO: not implemented yet */
+static int matchCompanyByType(SetElement elem, KeyForSetElement key)
+{
+    TransportCompany *company = elem;
+    TransportType type = *(TransportType *)key;
+
+    return (company->type & type) != 0;
+}
+
+TransportResult TransportManagerReportTransportCompanies(TransportManager tm, TransportType type, FILE *outChannel)
+{
+    Set filtered = NULL;
+
+    setFilter(tm->companies, &filtered, &type, matchCompanyByType);
+    setPrint(filtered, outChannel, setGetSize(filtered));
+    setDestroy(filtered);
+
     return TRANSPORT_SUCCESS;
 }

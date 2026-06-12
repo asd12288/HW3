@@ -21,11 +21,12 @@ int main()
     TransportManagerAdd(tm, 5, "El Al", TRANSPORT_FLIGHT, 8000.0, 8000.0);
     TransportManagerAdd(tm, 3, "Gett", TRANSPORT_TAXI, 1200.0, 900.0);
 
-    printf("=== All companies (by id) ===\n");
     TransportManagerReportTransportCompanies(tm, TRANSPORT_ALL, stdout);
-
-    printf("\n=== Bus companies only ===\n");
-    TransportManagerReportTransportCompanies(tm, TRANSPORT_BUS, stdout);
+    printf("----------------------------------------\n");
+    TransportManagerRemove(tm, 7);
+    TransportManagerRemove(tm, 3);
+    TransportManagerRemove(tm, 3);
+    TransportManagerReportTransportCompanies(tm, TRANSPORT_ALL, stdout);
 
     TransportManagerDestroy(tm);
     return 0;
