@@ -69,8 +69,8 @@ static int compareCompaniesByProfit(SetElement elem1, SetElement elem2)
     TransportCompany *company1 = elem1;
     TransportCompany *company2 = elem2;
 
-    int profit1 = company1->revenue - company1->expenses;
-    int profit2 = company2->revenue - company2->expenses;
+    double profit1 = company1->revenue - company1->expenses;
+    double profit2 = company2->revenue - company2->expenses;
 
     if ((profit1) > (profit2))
     {
@@ -84,7 +84,7 @@ static int compareCompaniesByProfit(SetElement elem1, SetElement elem2)
     return 0;
 }
 
-void printCompany(FILE *output, SetElement elem)
+static void printCompany(FILE *output, SetElement elem)
 {
     TransportCompany *company = (TransportCompany *)elem;
     if (company == NULL)
@@ -284,6 +284,11 @@ TransportResult TransportManagerRemove(TransportManager tm, int id)
 TransportResult TransportManagerUpdateRevenue(TransportManager tm, int id, double revenue)
 {
 
+    if (tm == NULL)
+    {
+        return TRANSPORT_NULL_ARGUMENT;
+    }
+
     if (id <= 0)
     {
         return TRANSPORT_INVALID_ID;
@@ -385,6 +390,11 @@ TransportResult TransportManagerMerge(TransportManager tm1, TransportManager tm2
 
 TransportResult TransportManagerReportTransportCompanies(TransportManager tm, TransportType type, FILE *outChannel)
 {
+    if (tm == NULL)
+    {
+        return TRANSPORT_NULL_ARGUMENT;
+    }
+    
     Set filtered = NULL;
 
     SetResult result;
@@ -392,11 +402,13 @@ TransportResult TransportManagerReportTransportCompanies(TransportManager tm, Tr
     result = setFilter(tm->companies, &filtered, &type, matchCompanyByType);
     if (setGetSize(filtered) == 0)
     {
+        setDestroy(filtered);
         return TRANSPORT_EMPTY;
     }
 
     if (result == SET_BAD_ARGUMENTS)
     {
+        setDestroy(filtered);
         return TRANSPORT_NULL_ARGUMENT;
     }
 
@@ -416,17 +428,20 @@ TransportResult TransportManagerReportUnprofitableCompanies(TransportManager tm,
     result = setFilter(tm->companies, &filtered, NULL, matchCompanyByLost);
     if (setGetSize(filtered) == 0)
     {
+        setDestroy(filtered);
         return TRANSPORT_EMPTY;
     }
 
     if (result == SET_BAD_ARGUMENTS)
     {
+        setDestroy(filtered);
         return TRANSPORT_NULL_ARGUMENT;
     }
 
     result = setPrintSorted(filtered, outChannel, setGetSize(filtered), compareCompaniesById);
     if (result == SET_BAD_ARGUMENTS)
     {
+        setDestroy(filtered);
         return TRANSPORT_NULL_ARGUMENT;
     }
     setDestroy(filtered);
@@ -442,7 +457,7 @@ TransportResult TransportManagerReportCompaniesByNetIncome(TransportManager tm, 
         return TRANSPORT_EMPTY;
     }
 
-    setPrintSorted(tm->companies, stdout, setGetSize(tm->companies), compareCompaniesByProfit);
+    setPrintSorted(tm->companies, outChannel, setGetSize(tm->companies), compareCompaniesByProfit);
 
     return TRANSPORT_SUCCESS;
 }
