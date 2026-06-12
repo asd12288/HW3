@@ -2,41 +2,20 @@
 #include <string.h>
 #include "transport_company.h"
 
-/******************************************************************************/
-/*
- * File: transport_company.c
- * Description: Implementation of the TransportCompany module.
- */
-/******************************************************************************/
-
 int typeCheck(TransportType type)
 {
     switch (type)
     {
-    case 1:
+    case TRANSPORT_SHIPPING:
+    case TRANSPORT_TRAIN:
+    case TRANSPORT_LIGHT_TRAIN:
+    case TRANSPORT_BUS:
+    case TRANSPORT_FLIGHT:
+    case TRANSPORT_TAXI:
+    case TRANSPORT_ALL:
         return 1;
-        break;
-    case 2:
-        return 1;
-        break;
-    case 4:
-        return 1;
-        break;
-    case 8:
-        return 1;
-        break;
-    case 16:
-        return 1;
-        break;
-    case 32:
-        return 1;
-        break;
-    case 63:
-        return 1;
-        break;
     default:
         return 0;
-        break;
     }
 }
 
@@ -92,12 +71,12 @@ int compareCompaniesByProfit(SetElement elem1, SetElement elem2)
     double profit1 = company1->revenue - company1->expenses;
     double profit2 = company2->revenue - company2->expenses;
 
-    if ((profit1) > (profit2))
+    if (profit1 > profit2)
     {
         return -1;
     }
 
-    if ((profit1) < (profit2))
+    if (profit1 < profit2)
     {
         return 1;
     }

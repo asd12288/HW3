@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-int main()
+int main(void)
 {
 
     TransportManager tm = TransportManagerCreate();
@@ -22,12 +22,7 @@ int main()
         fprintf(stderr, "Failed to create TransportManager\n");
         return 1;
     }
-    TransportManager merge = TransportManagerCreate();
-    if (merge == NULL)
-    {
-        fprintf(stderr, "Failed to create TransportManager\n");
-        return 1;
-    }
+    TransportManager merge = NULL;
 
     TransportManagerAdd(tm, 2, "Israel Railways", TRANSPORT_TRAIN, 500.0, 4200.0);
     TransportManagerAdd(tm, 7, "Egged", TRANSPORT_BUS, 3000.0, 3500.0);
@@ -42,6 +37,6 @@ int main()
     // TransportManagerReportTransportCompanies(merge, TRANSPORT_ALL, stdout);
     TransportManagerReportCompaniesByNetIncome(merge, stdout);
     // TransportManagerReportUnprofitableCompanies(merge, stdout);
-    TransportManagerDestroy(tm);
+    TransportManagerDestroy(merge);
     return 0;
 }

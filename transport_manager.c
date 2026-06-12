@@ -42,13 +42,17 @@ void TransportManagerDestroy(TransportManager tm)
 TransportResult TransportManagerAdd(TransportManager tm, int id, const char *name,
                                     TransportType type, double revenue, double expenses)
 {
+    if (tm == NULL || name == NULL)
+    {
+        return TRANSPORT_NULL_ARGUMENT;
+    }
 
     if (id <= 0)
     {
         return TRANSPORT_INVALID_ID;
     }
 
-    if (!typeCheck(type))
+    if (!typeCheck(type) || type == TRANSPORT_ALL)
     {
         return TRANSPORT_INVALID_TYPE;
     }
@@ -154,6 +158,11 @@ TransportResult TransportManagerUpdateRevenue(TransportManager tm, int id, doubl
 TransportResult TransportManagerUpdateExpenses(TransportManager tm, int id,
                                                double expenses)
 {
+    if (tm == NULL)
+    {
+        return TRANSPORT_NULL_ARGUMENT;
+    }
+
     if (id <= 0)
     {
         return TRANSPORT_INVALID_ID;
@@ -187,9 +196,19 @@ TransportResult TransportManagerUpdateExpenses(TransportManager tm, int id,
 TransportResult TransportManagerMerge(TransportManager tm1, TransportManager tm2,
                                       TransportManager *merged)
 {
+    if (tm1 == NULL || tm2 == NULL || merged == NULL)
+    {
+        return TRANSPORT_NULL_ARGUMENT;
+    }
 
     Set intersection = NULL;
-    setIntersection(tm1->companies, tm2->companies, &intersection);
+    SetResult inter_result = setIntersection(tm1->companies, tm2->companies, &intersection);
+
+    if (inter_result == SET_OUT_OF_MEMORY)
+    {
+        setDestroy(intersection);
+        return TRANSPORT_OUT_OF_MEMORY;
+    }
 
     int n = setGetSize(intersection);
     setDestroy(intersection);
@@ -204,9 +223,8 @@ TransportResult TransportManagerMerge(TransportManager tm1, TransportManager tm2
         return TRANSPORT_OUT_OF_MEMORY;
     }
 
-    setDestroy(temp_tm->companies);
-
-    SetResult result = setUnion(tm1->companies, tm2->companies, &temp_tm->companies);
+    Set union_set = NULL;
+    SetResult result = setUnion(tm1->companies, tm2->companies, &union_set);
 
     if (result == SET_OUT_OF_MEMORY)
     {
@@ -219,6 +237,12 @@ TransportResult TransportManagerMerge(TransportManager tm1, TransportManager tm2
         return TRANSPORT_NULL_ARGUMENT;
     }
 
+    setDestroy(temp_tm->companies);
+    temp_tm->companies = union_set;
+
+    TransportManagerDestroy(tm1);
+    TransportManagerDestroy(tm2);
+
     *merged = temp_tm;
 
     return TRANSPORT_SUCCESS;
@@ -226,9 +250,14 @@ TransportResult TransportManagerMerge(TransportManager tm1, TransportManager tm2
 
 TransportResult TransportManagerReportTransportCompanies(TransportManager tm, TransportType type, FILE *outChannel)
 {
-    if (tm == NULL)
+    if (tm == NULL || outChannel == NULL)
     {
         return TRANSPORT_NULL_ARGUMENT;
+    }
+
+    if (!typeCheck(type))
+    {
+        return TRANSPORT_INVALID_TYPE;
     }
 
     Set filtered = NULL;
@@ -236,6 +265,12 @@ TransportResult TransportManagerReportTransportCompanies(TransportManager tm, Tr
     SetResult result;
 
     result = setFilter(tm->companies, &filtered, &type, matchCompanyByType);
+    if (result == SET_OUT_OF_MEMORY)
+    {
+        setDestroy(filtered);
+        return TRANSPORT_OUT_OF_MEMORY;
+    }
+
     if (setGetSize(filtered) == 0)
     {
         setDestroy(filtered);
@@ -256,12 +291,22 @@ TransportResult TransportManagerReportTransportCompanies(TransportManager tm, Tr
 
 TransportResult TransportManagerReportUnprofitableCompanies(TransportManager tm, FILE *outChannel)
 {
+    if (tm == NULL || outChannel == NULL)
+    {
+        return TRANSPORT_NULL_ARGUMENT;
+    }
 
     Set filtered = NULL;
 
     SetResult result;
 
     result = setFilter(tm->companies, &filtered, NULL, matchCompanyByLost);
+    if (result == SET_OUT_OF_MEMORY)
+    {
+        setDestroy(filtered);
+        return TRANSPORT_OUT_OF_MEMORY;
+    }
+
     if (setGetSize(filtered) == 0)
     {
         setDestroy(filtered);
@@ -287,6 +332,10 @@ TransportResult TransportManagerReportUnprofitableCompanies(TransportManager tm,
 
 TransportResult TransportManagerReportCompaniesByNetIncome(TransportManager tm, FILE *outChannel)
 {
+    if (tm == NULL || outChannel == NULL)
+    {
+        return TRANSPORT_NULL_ARGUMENT;
+    }
 
     if (setGetSize(tm->companies) == 0)
     {
