@@ -17,7 +17,7 @@ typedef struct TransportCompany_s
 
 } TransportCompany;
 
-/* Returns 1 if the given type is a valid TransportType, 0 otherwise */
+// return 1 if the type is from the enum type 
 int typeCheck(TransportType type);
 
 // matchers
