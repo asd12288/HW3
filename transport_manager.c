@@ -14,7 +14,7 @@ TransportManager TransportManagerCreate(void)
     TransportManager new_tm = (TransportManager)malloc(sizeof(struct TransportManager_s));
     if (new_tm == NULL)
     {
-        free(new_tm);
+        //free(new_tm);
         return NULL;
     }
 
