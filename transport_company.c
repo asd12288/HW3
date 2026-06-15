@@ -71,12 +71,12 @@ int compareCompaniesByProfit(SetElement elem1, SetElement elem2)
     double profit1 = company1->revenue - company1->expenses;
     double profit2 = company2->revenue - company2->expenses;
 
-    if (profit1 > profit2)
+    if (profit1 < profit2)
     {
         return -1;
     }
 
-    if (profit1 < profit2)
+    if (profit1 > profit2)
     {
         return 1;
     }

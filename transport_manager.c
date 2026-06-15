@@ -265,6 +265,7 @@ TransportResult TransportManagerReportTransportCompanies(TransportManager tm, Tr
     SetResult result;
 
     result = setFilter(tm->companies, &filtered, &type, matchCompanyByType);
+
     if (result == SET_OUT_OF_MEMORY)
     {
         setDestroy(filtered);
