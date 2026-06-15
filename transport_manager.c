@@ -334,6 +334,7 @@ TransportResult TransportManagerReportCompaniesByNetIncome(TransportManager tm, 
 {
     if (tm == NULL || outChannel == NULL)
     {
+        printf("invalid tm\n");
         return TRANSPORT_NULL_ARGUMENT;
     }
 

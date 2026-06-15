@@ -31,12 +31,14 @@ int main(void)
 
     TransportManagerAdd(tm2, 5, "El Al", TRANSPORT_FLIGHT, 8000.0, 8000.0);
     TransportManagerAdd(tm2, 4, "Gett", TRANSPORT_TAXI, 1200.0, 900.0);
-
     TransportManagerMerge(tm, tm2, &merge);
 
     // TransportManagerReportTransportCompanies(merge, TRANSPORT_ALL, stdout);
-    TransportManagerReportCompaniesByNetIncome(merge, stdout);
-    // TransportManagerReportUnprofitableCompanies(merge, stdout);
+    // printf("starting to print merge\n\n");
+     TransportManagerReportCompaniesByNetIncome(merge, stdout);
+    // printf("finished\n");
+    
+    //TransportManagerReportUnprofitableCompanies(merge, stdout);
     TransportManagerDestroy(merge);
     return 0;
 }
